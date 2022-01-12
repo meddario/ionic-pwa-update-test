@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PWA Update Test</string>
+    <string name="title_activity_main">PWA Update Test</string>
+    <string name="package_name">pwa.update.test</string>
+    <string name="custom_url_scheme">pwa.update.test</string>
+</resources>
