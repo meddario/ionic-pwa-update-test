@@ -1,0 +1,7 @@
+{
+  "name": "PWA Update Test",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
