@@ -16,6 +16,27 @@
       <div id="container">
         <strong>App Version: {{ version }}</strong>
       </div>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col size="6" :key="photo" v-for="photo in photos">
+            <ion-img
+              :src="photo.webviewPath"
+              @click="showActionSheet(photo)"
+            ></ion-img>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <p>
+        {{ JSON.stringify(getPlatforms()) }}
+      </p>
+
+      <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button @click="takePhoto()">
+          <ion-icon :icon="camera"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     </ion-content>
   </ion-page>
 </template>
@@ -27,8 +48,20 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonFab,
+  IonIcon,
+  IonFabButton,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonImg,
+  actionSheetController,
+  getPlatforms,
 } from "@ionic/vue";
 import { defineComponent, ref } from "vue";
+import { camera, trash, close } from "ionicons/icons";
+
+import { usePhotoGallery, UserPhoto } from "@/composables/photo-gallery";
 
 export default defineComponent({
   components: {
@@ -37,11 +70,54 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
+    IonFab,
+    IonIcon,
+    IonFabButton,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonImg,
   },
   setup() {
     const version = ref<number>(1);
 
-    return { version };
+    const { takePhoto, photos, deletePhoto } = usePhotoGallery();
+
+    const showActionSheet = async (photo: UserPhoto) => {
+      const actionSheet = await actionSheetController.create({
+        header: "Photos",
+        buttons: [
+          {
+            text: "Delete",
+            role: "destructive",
+            icon: trash,
+            handler: () => {
+              deletePhoto(photo);
+            },
+          },
+          {
+            text: "Cancel",
+            icon: close,
+            role: "cancel",
+            handler: () => {
+              // Nothing to do, action sheet is automatically closed
+            },
+          },
+        ],
+      });
+      await actionSheet.present();
+    };
+
+    return {
+      version,
+      camera,
+      takePhoto,
+      photos,
+      trash,
+      close,
+      showActionSheet,
+      getPlatforms,
+    };
   },
 });
 </script>
