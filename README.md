@@ -1,6 +1,6 @@
 # Ionic PWA Update Test
 
-Try to update a Ionic native app using a PWA with service worker.
+Try to update a Ionic native app without reinstalling using a PWA with a service worker.
 
 ## Project creation
 
@@ -12,7 +12,7 @@ npx @ionic/cli cap add android # Add mobile support
 npx @vue/cli add pwa@next # Add PWA support, see https://ionicframework.com/docs/vue/pwa
 ```
 
-**Important:** Add vue.config.js for Service Worker workbox options:
+**Important:** Add vue.config.js for `workbox-webpack-plugin` options:
 
 ```js
 module.exports = {
@@ -30,6 +30,8 @@ module.exports = {
 };
 ```
 
+See <https://cli.vuejs.org/core-plugins/pwa.html#configuration> and  <https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-webpack-plugin.GenerateSW#GenerateSW> for full options.
+
 ## Updating mobile app after changing the plugins
 
 ```sh
@@ -44,6 +46,7 @@ To do this:
 
 - Change something in the app, for example the counter in `src/views/HomePage.vue`.
 - Republish the PWA using `./publish-pwa.sh` (which will publish the PWA to <https://pwa-update-test.surge.sh>, which represents our URL containing the `dist` output of `npm run build`).
+- On the device, close the app, removing it from the recent apps list, now a confirm window should appear saying "Update available, reload now?", clicking ok will reload the view and show the new app version.
 
 ## Screencasts
 
